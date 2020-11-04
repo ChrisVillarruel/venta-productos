@@ -1,0 +1,69 @@
+{% extends 'list.html' %}
+{% load static %}
+{% block head_list %}
+    <script src="{% static 'client/js/list.js' %}"></script>
+{% endblock %}
+
+{% block columnas %}
+    <tr>
+        <th scope="col" style="width: 10%">Nro</th>
+        <th scope="col" style="width: 10%">Nombre</th>
+        <th scope="col" style="width: 15%">Apellidos</th>
+        <th scope="col" style="width: 10%">DNI</th>
+        <th scope="col" style="width: 20%">Fecha de nacimiento</th>
+        <th scope="col" style="width: 10%">Genero</th>
+        <th scope="col" style="width: 20%">Opciones</th>
+    </tr>
+{% endblock %}
+
+{% block rows %}
+
+{% endblock %}
+
+{% block javascript %}
+<!-- Modal -->
+<div class="modal fade" id="myModalClient" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <form method="POST" action="." enctype="multipart/form-data">
+        <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <div class="container-fluid">
+                    <!-- identificador de accion -->
+                    <input type="hidden" name="action" value="add">
+                    <!-- identificador id -->
+                    <input type="hidden" name="id" id="id" value="0">
+                    <!-- form es la redenrizacion del formulario y tiene distintos metodos de uso -->
+                    {% for field in form.visible_fields %}
+                    <div class="form-group">
+                        <label>{{ field.label }}</label> {{ field }}
+                    </div>
+                    {% endfor %}
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="submit" class="btn btn-outline-success">Agregar Cliente</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar Acción</button>
+              </div>
+        </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
+
+<!--
+    sobreescribimos los botones de template/list.html, con el objetivo de realizar un
+    evento con ajax y no un cambio de pagina
+-->
+{% block buttons %}
+    <div class="card-footer">
+        <button class="btn btn-outline-success btnAdd">
+          <i class="fas fa-plus"></i> Nuevo Registro
+        </button>
+    </div>
+{% endblock %}

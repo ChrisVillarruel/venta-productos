@@ -1,0 +1,53 @@
+{% extends 'body.html' %}
+
+<!-- Template padre para todos los formularios  -->
+{% block table %}
+<form method="post" , action=".">
+    <div class="card card-default">
+        <div class="card card-default">
+            <div class="card-header">
+                <h3 class="card-title">
+                    <i class="fas fa-trash-alt"></i> {{ title }}
+                </h3>
+            </div>
+        </div>
+
+        {% csrf_token %}
+
+        <div class="card-body">
+            <div class="alert alert-danger alert-dismissible">
+                <h5><i class="icon fas fa-ban"></i>Aviso!</h5>
+                ¿Estas seguro de eliminar el registro "{{ object.name }}"?
+            </div>
+        </div>
+
+        <div class="card-footer">
+            <button type="submit" class="btn btn-outline-danger">
+            <i class="fas fa-trash-alt"></i> Si, Eliminar
+          </button>
+
+            <a href=" {{ list_url }} " type="submit" class="btn btn-secondary">
+            Cancelar
+          </a>
+        </div>
+
+    </div>
+</form>
+
+<script>
+    $('form').on('submit', function (e) {
+        e.preventDefault();
+
+        // creamos una variable, que de manera dinamica, va ir recibiendo parametros del post
+        // y automaticamente los va ir asignango a un arreglo array
+        // var parameters = $(this).serializeArray();
+
+        var parameters = new FormData(this);
+            submit_with_ajax(window.location.pathname, 'Alertar Eliminación de Registro', '¿Estas seguro de eliminar el registro?', parameters, function () {
+                location.href = '{{ list_url }}';
+            });
+    });
+</script>
+
+
+{% endblock %}

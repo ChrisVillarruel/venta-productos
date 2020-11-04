@@ -1,0 +1,88 @@
+<!--
+  Esta plantilla list, es nuestra plantilla base para las futuras listas que
+  se necesiten hacer
+-->
+
+<!-- Heredamos el template body.html que es nuestra base -->
+{% extends 'body.html' %}
+{% load static %}
+<!-- librerias para datatable -->
+{% block head %}
+  <link rel="stylesheet" href="{% static 'lib/datatables-1.10.20/css/dataTables.bootstrap4.min.css' %}"/>
+  <link rel="stylesheet" href="{% static 'lib/datatables-1.10.20/plugins/responsive-2.2.3/css/responsive.bootstrap4.min.css' %}"/>
+  <script src="{% static 'lib/datatables-1.10.20/js/jquery.dataTables.js' %}"></script>
+  <script src="{% static 'lib/datatables-1.10.20/js/dataTables.bootstrap4.min.js' %}"></script>
+  <script src="{% static 'lib/datatables-1.10.20/plugins/responsive-2.2.3/js/dataTables.responsive.min.js' %}"></script>
+  <script src="{% static 'lib/datatables-1.10.20/plugins/responsive-2.2.3/js/responsive.bootstrap4.min.js' %}"></script>
+
+  {% block head_list %}
+
+  {% endblock %}
+
+{% endblock %}
+
+{% block table %}
+  <div class="card card-default">
+      <div class="card card-default">
+        <div class="card-header">
+          <h3 class="card-title">
+            <i class="fas fa-search"></i>
+              {% block titleTable %}{% endblock %}
+          </h3>
+        </div>
+      </div>
+
+      <div class="card-body">
+          <table class="table" id="data">
+            <thead>
+
+              {% block columnas %}{% endblock %}
+
+            </thead>
+            <tbody>
+
+              {% block filas %}{% endblock %}
+
+            </tbody>
+          </table>
+      </div>
+
+      <!-- boton que funciona con ajax -->
+      {% block buttons %}
+        <div class="card-footer">
+            <a href=" {{ create_url }} " class="btn btn-outline-success btnTest">
+              <i class="fas fa-plus"></i> Nuevo Registro
+            </a>
+        </div>
+      {% endblock %}
+    </div>
+{% endblock %}
+
+{% block javascript %}
+  <script type="application/javascript">
+    $(function () {
+      $('#data').DataTable({
+        responsive: true,
+        autoWidth: false,
+      });
+
+      $('.btnTest').on('click', function() {
+        $.ajax({
+          url: '{% url 'erp:category-list' %} ',
+          type: 'POST',
+          data: {id: 1}, //el dato que va a tomar javascript
+          dataType: 'json' //tipo de dato que me va a retornar
+          }).done(function (data) { //Si no hay error, muestrame por consola lo que tiene POST
+            console.log(data);
+          }).fail(function (jqXHR, textStatus, errorThrown) { //Si hay un error, muestrale una alerta de error en el servidor al usuario
+            alert(textStatus + ": " + errorThrown);
+          }).always(function (data) {
+        });
+      });
+    });
+  </script>
+{% endblock %}
+
+
+
+

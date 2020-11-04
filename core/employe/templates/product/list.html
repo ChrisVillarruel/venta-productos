@@ -1,0 +1,46 @@
+{% extends 'list.html' %}
+{% load static %}
+
+{% block head_list %}
+    <script src="{% static 'product/js/list.js' %}"></script>
+{% endblock %}
+
+{% block titleTable %}
+    {{ title }}
+{% endblock %}
+
+{% block columnas %}
+    <tr>
+      <th scope="col" style="width: 5%">Nro</th>
+      <th scope="col" style="width: 15%">Producto</th>
+      <th scope="col" style="width: 15%">Categoria</th>
+      <th scope="col" style="width: 15%">Imagen</th>
+      <th scope="col" style="width: 10%">PVP</th>
+      <th scope="col" style="width: 20%">Opciones</th>
+    </tr>
+{% endblock %}
+
+{% block filas %}
+    {% for product in object_list %}
+        <tr>
+            <td>{{ product.id }}</td>
+            <td>{{ product.name }}</td>
+            <td>{{ product.cate.name }}</td>
+            <td class="text-center">
+                <img src="{{ product.get_image }}" class="img-fluid d-block mx-auto" style="width: 30px; height: 30px;">
+            </td>
+            <td>{{ product.pvp }} MXN</td>
+            <td class="text-center">
+                <a href=" {% url 'erp:product-update' product.id %}" class="btn btn-warning">
+                    Actualizar
+                </a>
+                <a href=" {% url 'erp:product-delete' product.id %} " class="btn btn-danger">
+                    Eliminar
+                </a>
+            </td>
+        </tr>
+    {% endfor %}
+{% endblock %}
+
+
+

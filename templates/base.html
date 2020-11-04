@@ -1,0 +1,45 @@
+<!--
+    cuerpo base de la plantilla padre, aqui se encuentran
+    todas las librerias externas a utilizar
+-->
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+  <title>AdminLTE 3 | {% block title %}{% endblock %} </title>
+
+  <!-- Libreria para los iconos -->
+  <link rel="stylesheet" href=" {% static 'lib/AdminLTE/plugins/fontawesome-free/css/all.min.css' %}">
+  <!-- Theme style -->
+  <link rel="stylesheet" href=" {% static 'lib/AdminLTE/css/adminlte.min.css' %} ">
+  <!-- Google Font: Source Sans Pro -->
+  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+  <!-- jQuery -->
+  <script src=" {% static 'lib/AdminLTE/plugins/jquery/jquery.min.js' %} "></script>
+  <!-- Bootstrap 4 -->
+  <script src=" {% static 'lib/AdminLTE/plugins/bootstrap/js/bootstrap.bundle.min.js' %} "></script>
+  <!-- AdminLTE App -->
+  <script src=" {% static 'lib/AdminLTE/js/adminlte.min.js' %} "></script>
+  <!-- Libreria de sweetalert -->
+  <script src=" {% static 'lib/sweetalert2-9.10.0/sweetalert2.all.min.js' %} "></script>
+  <!-- funciones  -->
+  <script src=" {% static 'js/functions.js' %} "></script>
+  <!-- jQuery confirm -->
+  <link href="{% static 'lib/jquery-confirm-v3.3.4/jquery-confirm.min.css' %}" rel="stylesheet">
+  <!-- jQuery confirm -->
+  <script src="{% static 'lib/jquery-confirm-v3.3.4/jquery-confirm.min.js' %}"></script>
+
+  {% block head %}{% endblock %}
+</head>
+  <!--
+  Bloques hijos, a los que las librerias del template padre,
+  tambien seran utilizadas en el template hijo
+   -->
+  {% block body %}{% endblock %}
+  {% block content %}{% endblock %}
+</html>

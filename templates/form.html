@@ -1,0 +1,130 @@
+{% extends 'body.html' %}
+
+<!-- Template padre para todos los formularios  -->
+{% block table %}
+<form method="post" action="." enctype="multipart/form-data">
+    <div class="card card-default">
+        <div class="card card-default">
+            <div class="card-header">
+                <h3 class="card-title">
+
+                    {% if action == 'add' %}
+                        <i class="fas fa-plus"></i> {{ title }}
+                    {% else %}
+                        <i class="fas fa-edit"></i> {{ title }}
+                    {% endif %}
+                </h3>
+            </div>
+        </div>
+        <div class="card-body">
+            {% csrf_token %}
+
+            <!-- para poder ver lo errores que se disparen se utiliza non_field_errors,
+            este tipo de error no tiene nada que ver con los componentes, pues
+            el error es detectado de manera global -->
+            <!-- {{ form.non_field_errors }} -->
+            <!-- se creo un input invisible para saber que tipo de accion va a entrar en ajax -->
+            <input type="hidden" name="action" value="{{action}}">
+            {% if form.errors %}
+                <div class="alert alert-danger alert-dismissible">
+                    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                    <h5><i class="icon fas fa-ban"></i> Ha ocurrido un error al querer guardar el registro</h5>
+                    <ul>
+                        {% for field in form %}
+                            {% for error in field.errors %}
+                                <li>{{ error }}</li>
+                            {% endfor %}
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+            <!-- form es la redenrizacion del formulario y tiene distintos metodos de uso -->
+            {% for field in form.visible_fields %}
+            <div class="form-group">
+                <label for="email">{{ field.label }}</label> {{ field }}
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="card-footer">
+            <button type="submit" class="btn btn-outline-success">
+                <i class="fas fa-save"></i> Guardar Registro
+            </button>
+
+            <a href=" {{ list_url }} " type="submit" class="btn btn-outline-danger">
+            Cancelar
+          </a>
+        </div>
+
+    </div>
+</form>
+
+
+<!-- Implementamos AJAX -->
+<script>
+    // Implementamos sweetAlert
+    {% if form.errors %}
+        var errors = '';
+        {% for field in form %}
+            {% for error in field.errors %}
+                errors += '{{ error }}\n';
+            {% endfor %}
+            {% for error in form.non_field_errors %}
+                errors += '{{ error }}\n';
+            {% endfor %}
+        {% endfor %}
+        Swal.fire({
+            title: 'Error!',
+            text: errors,
+            icon: 'error'
+        });
+    {% endif %}
+
+
+    $('form').on('submit', function (e) {
+        e.preventDefault();
+
+        // creamos una variable, que de manera dinamica, va ir recibiendo parametros del post
+        // y automaticamente los va ir asignango a un arreglo array
+        // var parameters = $(this).serializeArray();
+
+        // este tipo de dato me permite obtener una coleccion de elementos tanto
+        // de texto como multimedia haciendo referencia al formulario
+        // con la ayuda de this
+        var parameters = new FormData(this);
+
+        // parameters.forEach(function (value, key) {
+        //     console.log(key + ': ' + value)
+        // });
+
+        submit_with_ajax(window.location.pathname, 'Alerta de Confirmación', '¿Estas seguro de hacer la siguiente acción?', parameters, function () {
+            location.href = '{{ list_url }}';
+        });
+    });
+
+</script>
+
+{% endblock %}
+
+
+<!--
+Forma de hacer una validacion sin utilizar sweetalert
+         preguntamos si mi formulario tiene errores
+        {% if form.errors %}
+          <div class="alert alert-danger alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+            <h5><i class="icon fas fa-ban"></i> Ocurrio un error al momento de guardar los datos</h5>
+              <ul>
+                iteramos cada uno de mis componentes del formulario
+                {% for fields in form %}
+                 Ademas a cada componente iterado, iteraremos los errores que contenga cada componente
+                  {% for error in fields.errors %}
+                    mostramos los errores en una etiqueta lista
+                    <li> {{ error }} </li>
+                  {% endfor %}
+                {% endfor %}
+              </ul>
+          </div>
+        {% endif %}
+ -->
+

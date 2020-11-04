@@ -1,0 +1,34 @@
+<!--
+    Heredamos el template de temlates/list.html que es nuestro template padre
+    que va a ser nuestro template base para cada tabla que se cree
+-->
+{% extends 'list.html' %}
+{% load static %}
+
+{% block head_list %}
+    <script src="{% static 'category/js/list.js' %}"></script>
+{% endblock %}
+
+{% block titleTable %}
+    {{ title }}
+{% endblock %}
+
+{% block columnas %}
+    <tr>
+      <th scope="col" style="width: 10%">Nro</th>
+      <th scope="col" style="width: 20%">Categoria</th>
+      <th scope="col" style="width: 50%">Descripción</th>
+      <th scope="col" style="width: 20%">Opciones</th>
+    </tr>
+{% endblock %}
+
+{% block filas %}
+
+{% endblock %}
+
+
+
+<!-- {# llamamos el bloque javascript para que no ejecute el codigo ajax del template padre #} -->
+{% block javascript %}
+
+{% endblock %}
